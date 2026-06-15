@@ -34,6 +34,7 @@ RUN echo "<VirtualHost *:80>\n\
         AllowOverride All\n\
         Require all granted\n\
     </Directory>\n\
+    DirectoryIndex index.php\n\
     ErrorLog /var/log/apache2/error.log\n\
     CustomLog /var/log/apache2/access.log combined\n\
 </VirtualHost>" > /etc/apache2/sites-available/000-default.conf
