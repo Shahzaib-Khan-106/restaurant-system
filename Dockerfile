@@ -42,7 +42,5 @@ RUN echo "<VirtualHost *:80>\n\
 # Expose port 80
 EXPOSE 80
 
-
-
 # Start Apache
 CMD ["apache2-foreground"]
