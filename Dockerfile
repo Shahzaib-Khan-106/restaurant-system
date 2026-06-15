@@ -21,12 +21,13 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Install Laravel dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Set correct permissions for Laravel
+# Set permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 755 /var/www/html
 
 # Configure Apache to serve Laravel from /public
 RUN echo "<VirtualHost *:80>\n\
+    ServerName localhost\n\
     DocumentRoot /var/www/html/public\n\
     <Directory /var/www/html/public>\n\
         AllowOverride All\n\
@@ -36,6 +37,9 @@ RUN echo "<VirtualHost *:80>\n\
 
 # Expose port 80
 EXPOSE 80
+
+# Clear Laravel caches before start
+RUN php artisan config:clear && php artisan cache:clear && php artisan route:clear
 
 # Start Apache
 CMD ["apache2-foreground"]
