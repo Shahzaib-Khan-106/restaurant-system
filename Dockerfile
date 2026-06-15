@@ -38,8 +38,7 @@ RUN echo "<VirtualHost *:80>\n\
 # Expose port 80
 EXPOSE 80
 
-# Clear Laravel caches before start
-RUN php artisan config:clear && php artisan cache:clear && php artisan route:clear
+
 
 # Start Apache
 CMD ["apache2-foreground"]
