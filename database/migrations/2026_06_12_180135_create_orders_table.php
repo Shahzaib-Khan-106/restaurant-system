@@ -9,16 +9,19 @@ return new class extends Migration {
      * Run the migrations.
      */
     public function up(): void
-    {
-        Schema::create('orders', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('restaurant_id')->constrained()->onDelete('cascade');
-            $table->string('customer_name');
-            $table->string('customer_phone');
-            $table->enum('status', ['Pending', 'Preparing', 'Delivered'])->default('Pending');
-            $table->timestamps();
-        });
-    }
+{
+    Schema::create('orders', function (Blueprint $table) {
+        $table->id();
+        $table->string('name');
+        $table->string('email');
+        $table->string('phone');
+        $table->text('address');
+        $table->text('instructions')->nullable();
+        $table->string('status')->default('Pending');
+        $table->timestamps();
+    });
+}
+
 
     /**
      * Reverse the migrations.

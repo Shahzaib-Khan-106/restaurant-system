@@ -8,10 +8,13 @@ class Order extends Model
 {
     // Mass assignable fields
     protected $fillable = [
-        'restaurant_id',
-        'customer_name',
-        'customer_phone',
-        'status'
+        'name',
+        'email',
+        'phone',
+        'address',
+        'instructions',
+        'status',
+        'restaurant_id'
     ];
 
     // Relationships

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\MenuItem;
 
 class OrderController extends Controller
@@ -10,7 +12,6 @@ class OrderController extends Controller
     // Show all menu items for ordering
     public function showMenu()
     {
-        // Fetch all menu items from your existing database
         $menuItems = MenuItem::all();
         return view('order.menu', compact('menuItems'));
     }
@@ -28,25 +29,35 @@ class OrderController extends Controller
         return view('order.customer_info');
     }
 
-    // Handle customer info submission and show confirmation
+    // Handle customer info submission and save order
     public function confirmOrder(Request $request)
     {
-        // Collect customer info
-        $data = $request->only(['name', 'email', 'phone', 'address']);
+        // Save customer info into orders table
+        $order = Order::create($request->only([
+            'name', 'email', 'phone', 'address', 'instructions'
+        ]));
 
+        // Save selected menu items (from the order form)
+        foreach ($request->menu_items ?? [] as $itemId => $quantity) {
+            if ($quantity > 0) {
+                $item = MenuItem::find($itemId);
+                OrderItem::create([
+                    'order_id'     => $order->id,
+                    'menu_item_id' => $itemId,
+                    'quantity'     => $quantity,
+                    'price'        => $item->price,
+                ]);
+            }
+        }
 
-        // Later you can save this to 'orders' table along with menu items
-        return view('order.confirmation', compact('data'));
+        // Show confirmation page with saved order
+        return view('order.confirmation', compact('order'));
     }
+
+    // Show all placed orders with items
     public function orderDetails()
-{
-    // Fetch all orders or mock data for now
-    $orders = [
-        ['id' => 1, 'customer' => 'Shahzaib', 'email' => 'example@mail.com', 'phone' => '0300‑1234567', 'status' => 'Pending'],
-        ['id' => 2, 'customer' => 'Ali', 'email' => 'ali@mail.com', 'phone' => '0301‑9876543', 'status' => 'Completed'],
-    ];
-
-    return view('order.details', compact('orders'));
-}
-
+    {
+        $orders = Order::with('items.menuItem')->get();
+        return view('order.details', compact('orders'));
+    }
 }
