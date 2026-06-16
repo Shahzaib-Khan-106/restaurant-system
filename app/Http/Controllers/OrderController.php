@@ -15,10 +15,26 @@ class OrderController extends Controller
         return view('order.menu', compact('menuItems'));
     }
 
-    // Handle order submission (placeholder logic for now)
+    // Handle order submission (redirect to customer info screen)
     public function placeOrder(Request $request)
     {
-        // Later you can add full order saving logic here
-        return redirect()->route('order.menu')->with('success', 'Order placed successfully!');
+        // Instead of saving immediately, redirect to customer info form
+        return redirect()->route('order.customer');
+    }
+
+    // Show customer info form
+    public function customerInfo()
+    {
+        return view('order.customer_info');
+    }
+
+    // Handle customer info submission and show confirmation
+    public function confirmOrder(Request $request)
+    {
+        // Collect customer info
+        $data = $request->only(['name', 'email', 'phone']);
+
+        // Later you can save this to 'orders' table along with menu items
+        return view('order.confirmation', compact('data'));
     }
 }

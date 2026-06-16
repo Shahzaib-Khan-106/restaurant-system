@@ -21,3 +21,6 @@ Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
 // Customer order routes
 Route::get('/order', [OrderController::class, 'showMenu'])->name('order.menu');
 Route::post('/order', [OrderController::class, 'placeOrder'])->name('order.place');
+
+Route::get('/order/customer-info', [OrderController::class, 'customerInfo'])->name('order.customer');
+Route::post('/order/confirm', [OrderController::class, 'confirmOrder'])->name('order.confirm');
