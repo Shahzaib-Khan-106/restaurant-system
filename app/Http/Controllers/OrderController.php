@@ -34,16 +34,28 @@ class OrderController extends Controller
 
     // Handle customer info submission and save order
     public function confirmOrder(Request $request)
-    {
-        // Save customer info into orders table
-        $order = Order::create($request->only([
-            'name', 'email', 'phone', 'address', 'instructions'
-        ]));
+{
+    // Validate customer info
+    $request->validate([
+        'name' => 'required|string',
+        'email' => 'required|email',
+        'phone' => 'required|string',
+        'address' => 'required|string',
+    ]);
 
-        // Save selected menu items (from the order form)
-        foreach ($request->menu_items ?? [] as $itemId => $quantity) {
-            if ($quantity > 0) {
-                $item = MenuItem::find($itemId);
+    // Save customer info into orders table
+    $order = Order::create($request->only([
+        'name', 'email', 'phone', 'address'
+    ]));
+
+    // Retrieve menu items from session (not request)
+    $menuItems = session('menu_items', []);
+
+    // Save selected menu items
+    foreach ($menuItems as $itemId => $quantity) {
+        if ($quantity > 0) {
+            $item = MenuItem::find($itemId);
+            if ($item) {
                 OrderItem::create([
                     'order_id'     => $order->id,
                     'menu_item_id' => $itemId,
@@ -52,10 +64,15 @@ class OrderController extends Controller
                 ]);
             }
         }
-
-        // Show confirmation page with saved order
-        return view('order.confirmation', compact('order'));
     }
+
+    // Clear session after saving
+    session()->forget('menu_items');
+
+    // Show confirmation page
+    return view('order.confirmation', compact('order'));
+}
+
 
     // Show all placed orders with items
     public function orderDetails()
