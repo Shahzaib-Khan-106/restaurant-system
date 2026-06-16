@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\OrderController;
 
+
 // Homepage: list all restaurants
 Route::get('/', [RestaurantController::class, 'index'])->name('restaurants.index');
 
@@ -24,3 +25,4 @@ Route::post('/order', [OrderController::class, 'placeOrder'])->name('order.place
 
 Route::get('/order/customer-info', [OrderController::class, 'customerInfo'])->name('order.customer');
 Route::post('/order/confirm', [OrderController::class, 'confirmOrder'])->name('order.confirm');
+Route::get('/order/details', [OrderController::class, 'orderDetails'])->name('order.details');

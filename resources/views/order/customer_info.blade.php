@@ -22,6 +22,12 @@
                     <label class="form-label fw-semibold">Mobile Number</label>
                     <input type="text" name="phone" class="form-control" required>
                 </div>
+                <div class="mb-3">
+    <label class="form-label fw-semibold">Home Address</label>
+    <textarea name="address" class="form-control" rows="3" required></textarea>
+</div>
+
+
                 <div class="text-center mt-4">
                     <button type="submit" class="btn btn-lg text-white fw-bold shadow-sm"
                             style="background: linear-gradient(90deg, #ff6a00, #ee0979);">

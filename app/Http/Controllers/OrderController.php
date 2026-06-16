@@ -32,9 +32,21 @@ class OrderController extends Controller
     public function confirmOrder(Request $request)
     {
         // Collect customer info
-        $data = $request->only(['name', 'email', 'phone']);
+        $data = $request->only(['name', 'email', 'phone', 'address']);
+
 
         // Later you can save this to 'orders' table along with menu items
         return view('order.confirmation', compact('data'));
     }
+    public function orderDetails()
+{
+    // Fetch all orders or mock data for now
+    $orders = [
+        ['id' => 1, 'customer' => 'Shahzaib', 'email' => 'example@mail.com', 'phone' => '0300‑1234567', 'status' => 'Pending'],
+        ['id' => 2, 'customer' => 'Ali', 'email' => 'ali@mail.com', 'phone' => '0301‑9876543', 'status' => 'Completed'],
+    ];
+
+    return view('order.details', compact('orders'));
+}
+
 }
