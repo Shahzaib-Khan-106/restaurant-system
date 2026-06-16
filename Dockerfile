@@ -35,8 +35,5 @@ RUN echo "DirectoryIndex index.php" >> /etc/apache2/apache2.conf
 # Expose port 80
 EXPOSE 80
 
-# Clear Laravel caches before start
-RUN php artisan route:clear && php artisan config:clear && php artisan cache:clear
-
 # Start Apache
 CMD ["apache2-foreground"]
