@@ -19,8 +19,11 @@ class OrderController extends Controller
     // Handle order submission (redirect to customer info screen)
     public function placeOrder(Request $request)
     {
-        // Instead of saving immediately, redirect to customer info form
-        return redirect()->route('order.customer');
+         // Store selected items temporarily or in session
+    session(['menu_items' => $request->menu_items]);
+
+    // Redirect to customer info form
+    return redirect()->route('order.customer');
     }
 
     // Show customer info form
