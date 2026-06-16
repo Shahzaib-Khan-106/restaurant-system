@@ -6,14 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    // Mass assignable fields
+    // Mass assignable fields (only those present in your migration)
     protected $fillable = [
         'name',
         'email',
         'phone',
         'address',
-        'instructions',
-        'status',
         'restaurant_id'
     ];
 
