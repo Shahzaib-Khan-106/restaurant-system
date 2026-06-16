@@ -14,7 +14,7 @@
             <h2 class="fw-bold">🍽️ Order Menu</h2>
         </div>
         <div class="card-body">
-            <form action="{{ route('order.place') }}" method="GET">
+            <form action="{{ route('order.place') }}" method="POST">
                 @csrf
                 <table class="table table-hover align-middle">
                     <thead class="table-dark">
