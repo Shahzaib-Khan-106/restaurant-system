@@ -44,14 +44,19 @@ class OrderController extends Controller
     ]);
 
     // Save customer info into orders table
-    $order = Order::create($request->only([
-        'name', 'email', 'phone', 'address'
-    ]));
+    $order = Order::create([
+        'name'        => $request->name,
+        'email'       => $request->email,
+        'phone'       => $request->phone,
+        'address'     => $request->address,
+        'instructions'=> $request->instructions ?? null,
+        'status'      => 'Pending',
+    ]);
 
-    // Retrieve menu items from session (not request)
+    // Retrieve menu items from session
     $menuItems = session('menu_items', []);
 
-    // Save selected menu items
+    // Save selected menu items safely
     foreach ($menuItems as $itemId => $quantity) {
         if ($quantity > 0) {
             $item = MenuItem::find($itemId);
@@ -72,6 +77,7 @@ class OrderController extends Controller
     // Show confirmation page
     return view('order.confirmation', compact('order'));
 }
+
 
 
     // Show all placed orders with items
