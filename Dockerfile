@@ -25,22 +25,18 @@ RUN composer install --no-dev --optimize-autoloader
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 755 /var/www/html
 
-# Configure Apache to serve Laravel from /public
-RUN echo "<VirtualHost *:80>\n\
-    ServerName localhost\n\
-    DocumentRoot /var/www/html/public\n\
-    <Directory /var/www/html/public>\n\
-        Options Indexes FollowSymLinks\n\
-        AllowOverride All\n\
-        Require all granted\n\
-    </Directory>\n\
-    DirectoryIndex index.php\n\
-    ErrorLog /var/log/apache2/error.log\n\
-    CustomLog /var/log/apache2/access.log combined\n\
-</VirtualHost>" > /etc/apache2/sites-available/000-default.conf
+# Configure Apache to serve Laravel from /public using sed
+RUN sed -i 's#DocumentRoot /var/www/html#DocumentRoot /var/www/html/public#g' /etc/apache2/sites-available/000-default.conf \
+    && sed -i 's#<Directory /var/www/html>#<Directory /var/www/html/public>#g' /etc/apache2/sites-available/000-default.conf
+
+# Ensure DirectoryIndex points to index.php
+RUN echo "DirectoryIndex index.php" >> /etc/apache2/apache2.conf
 
 # Expose port 80
 EXPOSE 80
+
+# Clear Laravel caches before start
+RUN php artisan route:clear && php artisan config:clear && php artisan cache:clear
 
 # Start Apache
 CMD ["apache2-foreground"]
